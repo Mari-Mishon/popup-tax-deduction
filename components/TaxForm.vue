@@ -32,7 +32,7 @@
       <div v-for="payment in payments" v-bind:key="payment.year">
         <input type="checkbox" class="calculate__checkbox" :id="payment.year" />
         <label :for="payment.year" class="calculate__checkbox-label"
-          >{{ payment.value }} рублей {{ formatNumeral(payment.year) }} </label
+          >{{ payment.value }} рублей {{ formatNumeral(payment.year) }}</label
         ><span class="calculate__interval"></span>
       </div>
     </section>
@@ -49,7 +49,9 @@
       <span>Срок</span>
     </label>
     </section>
-    <button class="deduction__add-btn" :disabled="$v.$invalid">Добавить</button>
+    <div class="footer-btn">
+      <button class="deduction__add-btn" :disabled="$v.$invalid">Добавить</button>
+    </div>
   </div>
 </template>
 
@@ -83,9 +85,9 @@ export default {
         let payments = [];
         while (true) {
           if (Math.floor(currentDeduction / tax) !== 0) {
-            payments.push({ value: tax, year: currentYear });
+            payments.push({ value: tax.toFixed(2), year: currentYear });
           } else {
-            payments.push({ value: currentDeduction, year: currentYear });
+            payments.push({ value: currentDeduction.toFixed(2), year: currentYear });
             break;
           }
           currentDeduction -= tax;
@@ -122,7 +124,7 @@ export default {
 
 <style lang="scss" scoped>
 .deduction {
-  position: relative;
+  position:relative;
   &__header {
     font-family: $font-stack;
     font-size: 28px;
@@ -135,7 +137,6 @@ export default {
     font-size: 14px;
     font-weight: normal;
     line-height: 24px;
-    white-space: pre-line;
     margin: 16px 0px 24px;
   }
 
@@ -209,13 +210,12 @@ button:disabled {
 }
 
 .calculate {
-  border-bottom: 2px solid #dfe3e6;
   &__title {
     font-family: $font-stack;
     font-size: 14px;
     font-weight: 500;
     line-height: 24px;
-    padding: 16px 0px;
+    margin-top: 16px;
   }
   &__checkbox {
     position: absolute;
@@ -226,6 +226,11 @@ button:disabled {
     display: inline-flex;
     align-items: center;
     user-select: none;
+    margin-top: 16px;
+    padding-bottom:16px;
+    width:100%;
+    border-bottom: 1px solid #dfe3e6;
+
   }
   &__checkbox + label::before {
     content: "";
@@ -322,14 +327,12 @@ button:disabled {
     line-height: 24px;}
  
  
-/* Hover */
 .checkbox-btn input[type=checkbox]:hover +span {
 	background: #DFE3E6;
-      border-radius: 50px;
-      	color: black;
+  border-radius: 50px;
+  color: black;
 }
  
-/* Disabled */
 .checkbox-btn input[type=checkbox]:disabled + span {
 	background: #EEF0F2;
 	color: black;
@@ -339,4 +342,11 @@ button:disabled {
 	background: #EEF0F2;
 }
 }
+
+@media (max-width: 600px) {
+  .options .checkbox-btn {
+    margin: 0;
+  }
+}
+
 </style>

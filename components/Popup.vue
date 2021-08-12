@@ -28,15 +28,17 @@ export default {
   background-color: gray;
   position: fixed;
   display: flex;
+  width: 100%;
+    overflow: scroll;
 
 
 &__content {
-position:relative;
+  position:relative;
   margin: auto;
   background-color: white;
   border-radius: 30px;
-  max-width: 552px;
   padding: 32px;
+  width:552px;
 }
 
 &__close-btn {
@@ -50,5 +52,19 @@ position:relative;
     right: 27px;
     top: 27px;
   }
+}
+
+@media (max-width: 600px) {
+.popup{
+  position: absolute;
+  width:100%;
+  height: 100%;
+  z-index:1;
+  
+&__content {
+    min-height: 100%;
+    border-radius: 0;
+  }
+}
 }
 </style>
