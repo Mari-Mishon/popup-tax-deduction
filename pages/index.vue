@@ -8,12 +8,10 @@
 
 <script>
 import Popup from "@/components/Popup.vue";
-// import PopupButton from "@/components/PopupButton.vue";
 
 export default {
   components: {
     Popup,
-    // PopupButton,
   },
   data() {
     return {
@@ -32,14 +30,23 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/assets/scss/main.scss";
+@font-face {
+  font-family: "LabGrotesque";
+  src: 
+    url("@/assets/fonts/LabGrotesque-Regular.woff") format("woff"),
+    url("@/assets/fonts/LabGrotesque-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-variant: normal;
+}
 
 @font-face {
   font-family: "LabGrotesque";
-  src: local("Geometria Thin"), local("Geometria-Thin"),
-    url("~@/assets/fonts/LabGrotesque-Regular.woff") format("woff"),
-    url("~@/assets/fonts/LabGrotesque-Regular.woff2") format("woff2");
-  font-weight: 400;
+  src: 
+    url("@/assets/fonts/LabGrotesque-Medium.woff") format("woff"),
+    url("@/assets/fonts/LabGrotesque-Medium.woff2") format("woff2");
+  font-weight: 500;
   font-style: normal;
   font-stretch: normal;
   font-variant: normal;
@@ -51,7 +58,7 @@ export default {
   align-items: center;
   padding: 16px 32px;
   position: absolute;
-  width: 198px;
+  width: 200px;
   height: 56px;
   left: 621px;
   top: 372px;
@@ -61,7 +68,6 @@ export default {
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  color: white;
   background: none;
   border: 1px solid #ffffff;
   box-sizing: border-box;
@@ -73,6 +79,6 @@ export default {
   background: white;
   color: black;
   filter: none;
-  cursor: url("@/assets/img/pointer.png"), pointer;
+  cursor: url("@/assets/img/pointer.svg"), pointer;
 }
 </style>

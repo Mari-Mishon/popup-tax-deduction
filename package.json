@@ -11,14 +11,18 @@
   },
   "dependencies": {
     "core-js": "^3.15.1",
-    "nuxt": "^2.15.7"
+    "nuxt": "^2.15.7",
+    "vuelidate": "^0.7.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/eslint-parser": "^7.12.1",
+    "@nuxtjs/style-resources": "^1.2.1",
     "eslint": "^7.18.0",
     "fibers": "^5.0.0",
+    "node-sass": "^6.0.1",
     "sass": "^1.37.5",
-    "sass-loader": "^10.2.0"
+    "sass-loader": "^10.2.0",
+    "stylelint-config-recommended": "^5.0.0"
   }
 }

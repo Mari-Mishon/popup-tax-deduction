@@ -1,19 +1,22 @@
 <template>
   <div class="popup">
     <div class="popup__content">
-      <span>Popup logics</span>
-      <span @click="closePopup">Close X</span>
+      <button class="popup__close-btn" @click="closePopup"></button>
+      <TaxForm />
     </div>
   </div>
 </template>
 
 <script>
+import TaxForm from "@/components/TaxForm.vue";
+
 export default {
+  components: { TaxForm },
   methods: {
     closePopup() {
-      this.$emit('closePopup')
-    }
-  }
+      this.$emit("closePopup");
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -25,14 +28,27 @@ export default {
   background-color: gray;
   position: fixed;
   display: flex;
-}
 
-.popup__content {
+
+&__content {
+position:relative;
   margin: auto;
   background-color: white;
   border-radius: 30px;
-  min-height: 476px;
-  min-width: 552px;
-  padding: 20px;
+  max-width: 552px;
+  padding: 32px;
+}
+
+&__close-btn {
+    width:18px;
+    height:18px;
+    color:red;
+    border: none;
+    background:url("@/assets/img/close.svg");
+    cursor: url("@/assets/img/pointer.svg"), pointer;
+    position: absolute;
+    right: 27px;
+    top: 27px;
+  }
 }
 </style>
