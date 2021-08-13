@@ -1,3 +1,9 @@
+const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
+  router: {
+    base: '/popup-tax-deduction/'
+  }
+} : {}
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -41,7 +47,7 @@ export default {
     scss: ['@/assets/scss/variables.scss' // путь к вашему файлу
     ],
   },
-
+  ...routerBase,
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }
