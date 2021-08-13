@@ -29,42 +29,44 @@ export default {
   position: fixed;
   display: flex;
   width: 100%;
-    overflow: scroll;
+  overflow: scroll;
 
+  &__content {
+    position: relative;
+    margin: auto;
+    background-color: white;
+    border-radius: 30px;
+    padding: 32px;
+    width: 552px;
+  }
 
-&__content {
-  position:relative;
-  margin: auto;
-  background-color: white;
-  border-radius: 30px;
-  padding: 32px;
-  width:552px;
-}
-
-&__close-btn {
-    width:18px;
-    height:18px;
-    color:red;
+  &__close-btn {
+    width: 18px;
+    height: 18px;
     border: none;
-    background:url("@/assets/img/close.svg");
-    cursor: url("@/assets/img/pointer.svg"), pointer;
+    background: url("@/assets/img/close.svg");
     position: absolute;
     right: 27px;
     top: 27px;
   }
-}
-
-@media (max-width: 600px) {
-.popup{
-  position: absolute;
-  width:100%;
-  height: 100%;
-  z-index:1;
-  
-&__content {
-    min-height: 100%;
-    border-radius: 0;
+  &__close-btn:hover {
+    cursor: $custom-cursor;
   }
 }
+
+
+
+@media (max-width: 600px) {
+  .popup {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    &__content {
+      min-height: 100%;
+      border-radius: 0;
+    }
+  }
 }
 </style>

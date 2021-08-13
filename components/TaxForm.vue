@@ -1,30 +1,32 @@
 <template>
   <div class="deduction">
     <h3 class="deduction__header">Налоговый вычет</h3>
-    <p class="deduction__description">Используйте налоговый вычет чтобы погасить ипотеку досрочно. 
-      Размер налогового вычета составляет не более 13% от своего 
-      официального годового дохода.
+    <p class="deduction__description">
+      Используйте налоговый вычет чтобы погасить ипотеку досрочно. Размер
+      налогового вычета составляет не более 13% от своего официального годового
+      дохода.
     </p>
     <h3 class="deduction__input-title">Ваша зарплата в месяц</h3>
-          <p>
-            <input 
-              class="input-element"
-              name="salary_name"
-              type="text"
-              v-model="salary"
-              placeholder="Введите данные"
-              @blur="$v.salary.$touch()"
-            />
-          </p>
-          <div class="input__error" v-if="$v.$error">
-            <span v-if="!$v.salary.required"> Поле обязательно для заполнения </span>
-          </div>
+    <p>
+      <input
+        class="input-element"
+        name="salary_name"
+        type="text"
+        v-model="salary"
+        placeholder="Введите данные"
+        @blur="$v.salary.$touch()"
+        v-bind:class="{ active: $v.$error}"
+      />
+    </p>
+    <div class="input__error" v-if="$v.$error">
+      <span v-if="!$v.salary.required"> Поле обязательно для заполнения </span>
+    </div>
     <p>
       <button class="calculate-btn" @click="calculateTaxDeduction">
         Рассчитать
       </button>
     </p>
-  
+
     <section class="calculate" v-if="payments.length !== 0">
       <h3 class="calculate__title">
         Итого можете внести в качестве досрочных:
@@ -32,34 +34,35 @@
       <div v-for="payment in payments" v-bind:key="payment.year">
         <input type="checkbox" class="calculate__checkbox" :id="payment.year" />
         <label :for="payment.year" class="calculate__checkbox-label"
-          >{{ payment.value }} рублей {{ formatNumeral(payment.year) }}</label
-        ><span class="calculate__interval"></span>
+          >{{ payment.value }} рублей <span class="calculate__interval">&nbsp;{{ formatNumeral(payment.year) }} год</span> </label
+        >
       </div>
     </section>
 
     <section class="options">
       <h4 class="options__title">Что уменьшаем?</h4>
       <label class="checkbox-btn">
-        <input type="checkbox" checked>
+        <input type="checkbox" checked />
         <span>Платеж</span>
       </label>
-	
-    <label class="checkbox-btn">
-      <input type="checkbox">
-      <span>Срок</span>
-    </label>
+
+      <label class="checkbox-btn">
+        <input type="checkbox" />
+        <span>Срок</span>
+      </label>
     </section>
     <div class="footer-btn">
-      <button class="deduction__add-btn" :disabled="$v.$invalid">Добавить</button>
+      <button class="deduction__add-btn" :disabled="$v.$invalid">
+        Добавить
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import {required} from 'vuelidate/lib/validators'
+import { required } from "vuelidate/lib/validators";
 
 export default {
-
   data() {
     return {
       payments: [],
@@ -70,10 +73,10 @@ export default {
   },
 
   validations: {
-      salary: {
-          required
-        }
-      },
+    salary: {
+      required,
+    },
+  },
 
   methods: {
     calculateTaxDeduction() {
@@ -85,9 +88,12 @@ export default {
         let payments = [];
         while (true) {
           if (Math.floor(currentDeduction / tax) !== 0) {
-            payments.push({ value: tax.toFixed(2), year: currentYear });
+            payments.push({ value: Math.round(tax,2).toLocaleString(), year: currentYear });
           } else {
-            payments.push({ value: currentDeduction.toFixed(2), year: currentYear });
+            payments.push({
+              value: Math.round(currentDeduction,2).toLocaleString(),
+              year: currentYear,
+            });
             break;
           }
           currentDeduction -= tax;
@@ -99,7 +105,7 @@ export default {
 
     formatNumeral(numeral) {
       if ([1, 4, 5].includes(numeral)) {
-        return `в ${numeral}-ый`;
+        return ` в ${numeral}-ый`;
       }
 
       if (numeral == 2) {
@@ -114,7 +120,7 @@ export default {
         return `в ${numeral}-ий`;
       }
 
-      if ((numeral > 8) && (numeral < 20)) {
+      if (numeral > 8 && numeral < 20) {
         return `в ${numeral}-ый`;
       }
     },
@@ -123,8 +129,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+%font-shared {
+  font-family: $font-stack;
+  font-size: 14px;
+  line-height: 24px;
+}
+
 .deduction {
-  position:relative;
+  position: relative;
   &__header {
     font-family: $font-stack;
     font-size: 28px;
@@ -132,19 +144,15 @@ export default {
     line-height: 40px;
   }
   &__description {
-    color: #808080;
-    font-family: $font-stack;
-    font-size: 14px;
+    @extend %font-shared;
     font-weight: normal;
-    line-height: 24px;
+    color: #808080;
     margin: 16px 0px 24px;
   }
 
   &__input-title {
-    font-family: $font-stack;
-    font-size: 14px;
+    @extend %font-shared;
     font-weight: 500;
-    line-height: 24px;
   }
 
   &__add-btn {
@@ -162,23 +170,29 @@ export default {
   }
 
   &__add-btn:hover,
-  &__add-btn:active{
-    cursor: url("@/assets/img/pointer.svg"), pointer;
-    background: #EA0029;
+  &__add-btn:active {
+    cursor: $custom-cursor;
+    background: #ea0029;
   }
 }
+
 button:disabled {
-  background:#BEC5CC;
-  box-shadow:none;
+  background: #bec5cc;
+  box-shadow: none;
 }
+
 .input-element {
   margin: 8px 0px;
   padding: 8px;
   width: 100%;
-  font-size: 14px;
-  font-family: $font-stack;
-  border: 1px solid #dfe3e6;
+  @extend %font-shared;
+  border: 1px solid $label-color;
   border-radius: 3px;
+}
+
+.active{
+  border: 1px solid #EA0029;
+  box-sizing: border-box;
 }
 
 .input__error {
@@ -186,36 +200,35 @@ button:disabled {
   text-align: left;
   font-size: 10px;
   margin-top: 3px;
-} 
+}
 
 .calculate-btn {
-  color: #ea0029;
+  color: $button-color;
   border: none;
   background-color: inherit;
-  cursor: pointer;
-  font-family: $font-stack;
-  font-size: 14px;
+  cursor: $custom-cursor;
+  @extend %font-shared;
   font-weight: 500;
-  line-height: 24px;
 }
 
 .calculate-btn:active {
-    color: #ea0029;
-  cursor: url("@/assets/img/pointer.svg"), pointer;
+  color: $button-color;
+  cursor: $custom-cursor;
 }
 
 .calculate-btn:hover {
-  color: #F53A31;
-  cursor: url("@/assets/img/pointer.svg"), pointer;
+  color: #f53a31;
+  cursor: $custom-cursor;
 }
 
 .calculate {
   &__title {
-    font-family: $font-stack;
-    font-size: 14px;
+    @extend %font-shared;
     font-weight: 500;
-    line-height: 24px;
     margin-top: 16px;
+  }
+  &__interval{
+    color:gray;
   }
   &__checkbox {
     position: absolute;
@@ -227,10 +240,9 @@ button:disabled {
     align-items: center;
     user-select: none;
     margin-top: 16px;
-    padding-bottom:16px;
-    width:100%;
-    border-bottom: 1px solid #dfe3e6;
-
+    padding-bottom: 16px;
+    width: 100%;
+    border-bottom: 1px solid $label-color;
   }
   &__checkbox + label::before {
     content: "";
@@ -239,7 +251,7 @@ button:disabled {
     height: 1em;
     flex-shrink: 0;
     flex-grow: 0;
-    border: 1px solid #dfe3e6;
+    border: 1px solid $label-color;
     border-radius: 6px;
     margin-right: 0.5em;
     background-repeat: no-repeat;
@@ -252,22 +264,18 @@ button:disabled {
     background-image: url("@/assets/img/checkbox.svg");
   }
   &__checkbox:hover + label::before {
-    border:1px solid black;
-    cursor: url("@/assets/img/pointer.svg"), pointer;
+    border: 1px solid black;
+    cursor: $custom-cursor;
   }
 
   &__checkbox-label {
-    font-family: $font-stack;
-    font-size: 14px;
+    @extend %font-shared;
     font-weight: 500;
-    line-height: 24px;
   }
 
   &__interval {
-    font-family: $font-stack;
-    font-size: 14px;
+    @extend %font-shared;
     font-weight: 500;
-    line-height: 24px;
     color: gray;
   }
 }
@@ -277,70 +285,66 @@ button:disabled {
   margin-top: 24px;
   &__title {
     display: inline-flex;
-    font-family: $font-stack;
-    font-size: 14px;
+    @extend %font-shared;
     font-weight: 500;
-    line-height: 24px;
-    margin-right:32px;
+    margin-right: 32px;
   }
 
-.checkbox-btn {
-	display: inline-block;
-	margin: 0 16px 0 0;
-	user-select: none;
-	position: relative;  
-}
-.checkbox-btn input[type=checkbox] {
-	z-index: -1;
-	opacity: 0;
-	display: block;
-	width: 0;
-	height: 0;
-}
-.checkbox-btn span {
-	display: inline-block;
-	cursor: pointer;
-  background: #eef0f2;
-  width: 57px;
-  height: 36px;
-  border-radius: 50px;
-  border: none;
-  color: black;
-  font-family: $font-stack;
-  text-align: center;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 24px;
-  padding-top:6px;
-}
- 
-.checkbox-btn input[type=checkbox]:checked + span {
- background: $primary-background;
+  .checkbox-btn {
+    display: inline-block;
+    margin: 0 16px 0 0;
+    user-select: none;
+    position: relative;
+  }
+  .checkbox-btn input[type="checkbox"] {
+    z-index: -1;
+    opacity: 0;
+    display: block;
+    width: 0;
+    height: 0;
+  }
+  .checkbox-btn span {
+    display: inline-block;
+    cursor: $custom-cursor;
+    background: $checkbox-background;
+    width: 57px;
+    height: 36px;
+    border-radius: 50px;
+    border: none;
+    color: black;
+    font-family: $font-stack;
+    text-align: center;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 24px;
+    padding-top: 6px;
+  }
+
+  .checkbox-btn input[type="checkbox"]:checked + span {
+    background: $primary-background;
     width: 73px;
     height: 36px;
     border-radius: 50px;
     border: none;
-    color: white;
-    font-family: $font-stack;
-    font-size: 14px;
+    color: $checkbox-background;
+    @extend %font-shared;
     font-weight: normal;
-    line-height: 24px;}
- 
- 
-.checkbox-btn input[type=checkbox]:hover +span {
-	background: #DFE3E6;
-  border-radius: 50px;
-  color: black;
-}
- 
-.checkbox-btn input[type=checkbox]:disabled + span {
-	background: #EEF0F2;
-	color: black;
-	cursor: default;
-}
-.checkbox-btn input[type=checkbox]:checked:disabled + span {
-	background: #EEF0F2;
-}
+  }
+
+  .checkbox-btn input[type="checkbox"]:hover + span {
+    background: $label-color;
+    border-radius: 50px;
+    color: black;
+  }
+
+  .checkbox-btn input[type="checkbox"]:disabled + span {
+    background: $checkbox-background;
+    color: black;
+    cursor: default;
+  }
+  .checkbox-btn input[type="checkbox"]:checked:disabled + span {
+    background: $checkbox-background;
+  }
 }
 
 @media (max-width: 600px) {
@@ -348,5 +352,4 @@ button:disabled {
     margin: 0;
   }
 }
-
 </style>
